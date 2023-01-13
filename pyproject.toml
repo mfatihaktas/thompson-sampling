@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "thompson-sampling"
+version = "0.1.0"
+description = ""
+authors = ["Mehmet Aktas <mfatihaktas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "thompson_sampling"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
