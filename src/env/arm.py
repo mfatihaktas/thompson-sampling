@@ -59,7 +59,7 @@ class NonStationaryArm_wHighLowReward(Arm):
         elif self.state == ArmState.low:
             return self.low_reward_rv.sample()
 
-    def transition_state(self):
+    def switch_state(self):
         if self.state == ArmState.high:
             self.state = ArmState.low
         elif self.state == ArmState.low:
@@ -68,7 +68,7 @@ class NonStationaryArm_wHighLowReward(Arm):
     def pull(self) -> float:
         if self.phase_duration == 0:
             self.phase_duration = int(self.phase_duration_rv.sample())
-            self.transition_state()
+            self.switch_state()
         else:
             self.phase_duration -= 1
 
