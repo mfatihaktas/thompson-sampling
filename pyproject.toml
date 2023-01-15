@@ -6,8 +6,9 @@ authors = ["Mehmet Aktas <mfatihaktas@gmail.com>"]
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11,<3.12"
 numpy = "^1.24.1"
+scipy = "^1.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
