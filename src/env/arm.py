@@ -1,4 +1,5 @@
 import abc
+import enum
 
 from src.prob import rv
 

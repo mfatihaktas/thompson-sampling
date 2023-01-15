@@ -45,6 +45,7 @@ def test_stationary_bandit_w_ts_sliding_win_vs_reset_win(
         low_reward_rv=low_reward_rv,
     )
 
+    win_len = 20
     agent_ts_sliding_win = agent_module.ThompsonSamplingAgent_slidingWin(
         num_arms=num_arms,
         win_len=win_len,

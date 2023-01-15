@@ -1,3 +1,4 @@
+import collections
 import dataclasses
 
 from src.env import bandit as bandit_module
@@ -6,8 +7,13 @@ from src.agent import agent as agent_module
 
 @dataclasses.dataclass
 class SimResult:
-    agent_to_rewards_from_action_map: dict[agent_module.Agent, list] = {}
-    reward_from_high_reward_list: list = []
+    agent_to_rewards_from_action_map: dict[agent_module.Agent, list] = dataclasses.field(
+        # default=collections.defaultdict(list)
+        default_factory=collections.defaultdict(list)
+    )
+    reward_from_high_reward_list: list = dataclasses.field(
+        default_factory=list
+    )
 
     def append_reward_from_action(self, agent: agent_module.Agent, reward: float):
         self.sim_result.agent_to_rewards_from_action_map[agent].append(reward)

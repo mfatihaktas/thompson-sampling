@@ -1,5 +1,7 @@
 import abc
 
+from typing import Tuple
+
 from src.prob import rv
 
 
