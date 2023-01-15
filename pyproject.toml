@@ -17,3 +17,15 @@ pytest = "^7.2.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+# Ref: https://docs.pytest.org/en/4.6.x/reference.html#ini-options-ref
+minversion = "6.0"
+addopts = "-s"
+log_cli = true
+log_cli_level = "DEBUG"
+# Ref: https://docs.python.org/3/library/logging.html#logrecord-attributes
+log_cli_format = "%(levelname)s] %(filename)s:%(lineno)s - %(funcName)s: %(message)s"
+testpaths = [
+    "tests",
+]
