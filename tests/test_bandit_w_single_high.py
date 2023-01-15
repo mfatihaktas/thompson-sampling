@@ -6,6 +6,7 @@ from src.agent import agent as agent_module
 from src.env import bandit as bandit_module
 from src.prob import rv
 from src.sim import sim
+from src.utils.debug import *
 
 
 @pytest.fixture(
@@ -35,6 +36,8 @@ def test_stationary_bandit_w_ts_sliding_win_vs_reset_win(
     num_arms_and_w_high_reward: int,
     high_and_low_reward_rv: Tuple[rv.RandomVariable, rv.RandomVariable],
 ):
+    log(DEBUG, "Started", num_arms_and_w_high_reward=num_arms_and_w_high_reward, high_and_low_reward_rv=high_and_low_reward_rv)
+
     num_arms, num_arms_w_high_reward = num_arms_and_w_high_reward
     high_reward_rv, low_reward_rv = high_and_low_reward_rv
 
