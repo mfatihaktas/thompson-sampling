@@ -53,6 +53,8 @@ class StationaryBandit(Bandit):
                 )
             )
 
+        log(DEBUG, "Constructed", arm_list=self.arm_list)
+
     def __repr__(self):
         return (
             "StationaryBandit( \n"
