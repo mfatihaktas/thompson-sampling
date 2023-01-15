@@ -3,11 +3,11 @@ name = "thompson-sampling"
 version = "0.1.0"
 description = ""
 authors = ["Mehmet Aktas <mfatihaktas@gmail.com>"]
-readme = "README.md"
-packages = [{include = "thompson_sampling"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+numpy = "^1.24.1"
 
 
 [tool.poetry.group.dev.dependencies]
