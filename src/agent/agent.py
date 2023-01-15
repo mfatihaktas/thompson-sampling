@@ -79,10 +79,10 @@ class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent):
 
 
 class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent):
-    def __init__(self, num_arms: int, win_len: int, threshold_prob_rare: float):
+    def __init__(self, num_arms: int, win_len: int, tail_mass_threshold: float):
         super().__init__(num_arms=num_arms, win_len=win_len)
 
-        self.threshold_prob_rare = threshold_prob_rare
+        self.tail_mass_threshold = tail_mass_threshold
 
     def __repr__(self):
         return (
@@ -124,9 +124,9 @@ class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent):
 
             Pr_getting_larger_than_reward = reward_rv.tail_prob(reward)
             Pr_getting_smaller_than_reward = reward_rv.cdf(reward)
-            Pr_reward_is_rare = 1 - min(Pr_getting_larger_than_reward, Pr_getting_smaller_than_reward)
-            if Pr_reward_is_rare >= self.threshold_prob_rare:
-                log(DEBUG, "Rare event detected", reward=reward, mean=mean, stdev=stdev, Pr_reward_is_rare=Pr_reward_is_rare, threshold_prob_rare=self.threshold_prob_rare)
+            tail_mass = min(Pr_getting_larger_than_reward, Pr_getting_smaller_than_reward)
+            if tail_mass <= self.tail_mass_threshold:
+                log(DEBUG, "Rare event detected", reward=reward, mean=mean, stdev=stdev, tail_mass=tail_mass, tail_mass_threshold=self.tail_mass_threshold)
                 self.arm_id_to_reward_queue_map[node_id].clear()
             else:
                 record()
