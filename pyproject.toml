@@ -10,7 +10,6 @@ python = "^3.11,<3.12"
 numpy = "^1.24.1"
 scipy = "^1.10.0"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
 
@@ -21,11 +20,12 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 # Ref: https://docs.pytest.org/en/4.6.x/reference.html#ini-options-ref
 minversion = "6.0"
-addopts = "-s"
-log_cli = true
+addopts = "-p no:logging"
+# log_cli = true
 log_cli_level = "DEBUG"
 # Ref: https://docs.python.org/3/library/logging.html#logrecord-attributes
-log_cli_format = "%(levelname)s] %(filename)s:%(lineno)s - %(funcName)s: %(message)s"
+# log_cli_format = "%(levelname)s] %(filename)s:%(lineno)s - %(funcName)s: %(message)s"
+# log_cli_format = "%(levelname)s] %(file_name)s:%(line_number)s - %(func_name)s: %(message)s"
 testpaths = [
     "tests",
 ]

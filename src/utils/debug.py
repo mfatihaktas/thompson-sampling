@@ -46,8 +46,8 @@ formatter = logging.Formatter(LOGGING_FORMAT)
 LOGGER_NAME = "thompson-sampling"
 # logging.basicConfig(level=logging.INFO, format=LOGGING_FORMAT)
 logger = logging.getLogger(LOGGER_NAME)
-# logger.setLevel(logging.DEBUG)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.INFO)
 
 
 def log_to_std():
