@@ -24,6 +24,9 @@ class Normal(RandomVariable):
     def __repr__(self):
         return f"Normal(mu= {self.mu}, sigma= {self.sigma})"
 
+    def to_latex(self):
+        return r"N({}, {})".format(self.mu, self.sigma)
+
     def cdf(self, x: float) -> float:
         return self.dist.cdf(x)
 
