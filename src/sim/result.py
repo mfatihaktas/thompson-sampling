@@ -38,6 +38,14 @@ class MeanSimResult:
             reward_samples_list=[sim_result.high_reward_sample_list for sim_result in sim_result_list]
         )
 
+        # Construct `aagent_to_mean_regrets_map`
+        self.agent_to_mean_regret_list_map = {}
+        for agent, mean_reward_list in self.agent_to_mean_rewards_map.items():
+            self.agent_to_mean_regret_list_map[agent] = [
+                mean_high_reward - mean_reward
+                for mean_reward, mean_high_reward in zip(mean_reward_list, self.mean_high_reward_list)
+            ]
+
     def __repr__(self):
         return (
             "MeanSimResult( \n"
