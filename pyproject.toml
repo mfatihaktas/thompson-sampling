@@ -25,7 +25,6 @@ addopts = "-rP -p no:logging"
 log_cli_level = "DEBUG"
 # Ref: https://docs.python.org/3/library/logging.html#logrecord-attributes
 # log_cli_format = "%(levelname)s] %(filename)s:%(lineno)s - %(funcName)s: %(message)s"
-# log_cli_format = "%(levelname)s] %(file_name)s:%(line_number)s - %(func_name)s: %(message)s"
 testpaths = [
     "tests",
 ]
