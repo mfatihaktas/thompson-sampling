@@ -21,9 +21,12 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 # Ref: https://docs.pytest.org/en/4.6.x/reference.html#ini-options-ref
 minversion = "6.0"
-addopts = "-rP -p no:logging"
-# log_cli = true
-log_cli_level = "DEBUG"
+# addopts = "--capture=no"
+# Note: Print only stdout.
+# addopts = "-rP -p no:logging"
+log_cli = true
+# log_cli_level = "DEBUG"
+log_cli_level = "INFO"
 # Ref: https://docs.python.org/3/library/logging.html#logrecord-attributes
 # log_cli_format = "%(levelname)s] %(filename)s:%(lineno)s - %(funcName)s: %(message)s"
 testpaths = [
