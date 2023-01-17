@@ -6,7 +6,7 @@ from src.utils.plot import *
 
 
 def plot_mean_sim_result(mean_sim_result: result_module.MeanSimResult, title: str = None, plot_suffix: str = ""):
-    # num_rounds = len(mean_sim_result.high_reward_sample_list)
+    num_rounds = len(mean_sim_result.mean_high_reward_list)
     round_index_list = list(range(1, num_rounds + 1))
 
     # Plot `mean_high_reward_list`
