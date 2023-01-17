@@ -1,6 +1,8 @@
 import collections
 import dataclasses
 
+from src.agent import agent as agent_module
+
 
 @dataclasses.dataclass
 class SimResult:
@@ -27,13 +29,21 @@ class MeanSimResult:
                 agent_to_reward_samples_list_map[agent].append(reward_list)
 
         self.agent_to_mean_rewards_map = {
-            self.get_mean_rewards(reward_samples_list=reward_samples_list)
+            agent: self.get_mean_rewards(reward_samples_list=reward_samples_list)
             for agent, reward_samples_list in agent_to_reward_samples_list_map.items()
         }
 
         # Construct `mean_high_reward_list`
-        mean_high_reward_list = self.get_mean_rewards(
+        self.mean_high_reward_list = self.get_mean_rewards(
             reward_samples_list=[sim_result.high_reward_sample_list for sim_result in sim_result_list]
+        )
+
+    def __repr__(self):
+        return (
+            "MeanSimResult( \n"
+            f"agent_to_mean_rewards_map= \n{self.agent_to_mean_rewards_map} \n"
+            f"mean_high_reward_list= \n{self.mean_high_reward_list} \n"
+            ")"
         )
 
     def get_mean_rewards(self, reward_samples_list: list[list[float]]) -> list[float]:

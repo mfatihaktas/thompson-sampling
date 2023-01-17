@@ -62,10 +62,11 @@ def test_stationary_bandit_w_ts_sliding_win_vs_reset_win(
         tail_mass_threshold=0.05,
     )
 
-    sim_result = sim.sim(
+    mean_sim_result = sim.sim(
         bandit=bandit,
         agent_list=[agent_ts_sliding_win, agent_ts_reset_win],
         num_rounds=10,
+        num_sim_runs=1,
     )
 
-    log(INFO, "", sim_result=sim_result)
+    log(INFO, "", mean_sim_result=mean_sim_result)
