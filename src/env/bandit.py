@@ -45,7 +45,7 @@ class StationaryBandit(Bandit):
             for i in range(self.num_arms_w_high_reward)
         ]
 
-        for i in range(self.num_arms - self.num_arms_w_high_reward - 1):
+        for i in range(self.num_arms - self.num_arms_w_high_reward):
             self.arm_list.append(
                 arm_module.StationaryArm(
                     name=f"low_reward_arm_{i}",

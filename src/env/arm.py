@@ -19,6 +19,13 @@ class StationaryArm(Arm):
 
         self.reward_rv = reward_rv
 
+    def __repr__(self):
+        return (
+            "StationaryArm( \n"
+            f"\t reward_rv= {self.reward_rv} \n"
+            ")"
+        )
+
     def pull(self) -> float:
         return self.reward_rv.sample()
 
