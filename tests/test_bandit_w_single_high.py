@@ -36,7 +36,7 @@ def test_stationary_bandit_w_ts_sliding_win_vs_reset_win(
     num_arms_and_w_high_reward: int,
     high_and_low_reward_rv: Tuple[rv.RandomVariable, rv.RandomVariable],
 ):
-    log(DEBUG, "Started", num_arms_and_w_high_reward=num_arms_and_w_high_reward, high_and_low_reward_rv=high_and_low_reward_rv)
+    log(INFO, "Started", num_arms_and_w_high_reward=num_arms_and_w_high_reward, high_and_low_reward_rv=high_and_low_reward_rv)
 
     num_arms, num_arms_w_high_reward = num_arms_and_w_high_reward
     high_reward_rv, low_reward_rv = high_and_low_reward_rv
@@ -50,11 +50,13 @@ def test_stationary_bandit_w_ts_sliding_win_vs_reset_win(
 
     win_len = 20
     agent_ts_sliding_win = agent_module.ThompsonSamplingAgent_slidingWin(
+        name="TS-SlidingWin",
         num_arms=num_arms,
         win_len=win_len,
     )
 
     agent_ts_reset_win = agent_module.ThompsonSamplingAgent_resetWinOnRareEvent(
+        name="TS-ResetWin",
         num_arms=num_arms,
         win_len=win_len,
         tail_mass_threshold=0.05,

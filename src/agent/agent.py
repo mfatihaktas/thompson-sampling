@@ -8,12 +8,14 @@ from src.utils.debug import *
 
 
 class Agent(abc.ABC):
-    def __init__(self, num_arms: int):
+    def __init__(self, name: str, num_arms: int):
+        self.name = name
         self.num_arms = num_arms
 
     def __repr__(self):
         return (
             "Agent( \n"
+            f"\t name= {self.name} \n"
             f"\t num_arms= {self.num_arms} \n"
             ")"
         )
@@ -28,8 +30,8 @@ class Agent(abc.ABC):
 
 
 class ThompsonSamplingAgent(Agent):
-    def __init__(self, num_arms: int, win_len: int):
-        super().__init__(num_arms=num_arms)
+    def __init__(self, name: str, num_arms: int, win_len: int):
+        super().__init__(name=name, num_arms=num_arms)
 
         self.win_len = win_len
 
@@ -49,12 +51,13 @@ class ThompsonSamplingAgent(Agent):
 
 
 class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent):
-    def __init__(self, num_arms: int, win_len: int):
-        super().__init__(num_arms=num_arms, win_len=win_len)
+    def __init__(self, name: str, num_arms: int, win_len: int):
+        super().__init__(name=name, num_arms=num_arms, win_len=win_len)
 
     def __repr__(self):
         return (
             "ThompsonSamplingAgent_slidingWin( \n"
+            f"\t name= {self.name} \n"
             f"\t num_arms= {self.num_arms} \n"
             f"\t win_len= {self.win_len} \n"
             ")"
@@ -83,8 +86,8 @@ class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent):
 
 
 class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent):
-    def __init__(self, num_arms: int, win_len: int, tail_mass_threshold: float):
-        super().__init__(num_arms=num_arms, win_len=win_len)
+    def __init__(self, name: str, num_arms: int, win_len: int, tail_mass_threshold: float):
+        super().__init__(name=name, num_arms=num_arms, win_len=win_len)
 
         self.tail_mass_threshold = tail_mass_threshold
 
