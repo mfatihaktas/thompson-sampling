@@ -13,17 +13,16 @@ def plot_mean_sim_result(mean_sim_result: result_module.MeanSimResult, title: st
     # plot.plot(round_index_list, mean_sim_result.mean_high_reward_list, color=next(dark_color_cycle), label="Highest", marker=next(marker_cycle), linestyle="dotted", lw=2, mew=3, ms=5)
 
     # Plot `agent_to_mean_rewards_map`
-    # for agent, mean_reward_list in mean_sim_result.agent_to_mean_rewards_map.items():
-    #     plot.plot(round_index_list, mean_reward_list, color=next(dark_color_cycle), label=agent.name, marker=next(marker_cycle), linestyle="dotted", lw=2, mew=3, ms=5)
+    # for agent, mean_regret_list in mean_sim_result.agent_to_mean_regret_list_map.items():
+    #     plot.plot(round_index_list, mean_regret_list, color=next(dark_color_cycle), label=agent.name, marker=next(marker_cycle), linestyle="dotted", lw=2, mew=1, ms=1)
 
-    # Plot `agent_to_mean_rewards_map`
-    for agent, mean_regret_list in mean_sim_result.agent_to_mean_regret_list_map.items():
-        plot.plot(round_index_list, mean_regret_list, color=next(dark_color_cycle), label=agent.name, marker=next(marker_cycle), linestyle="dotted", lw=2, mew=1, ms=1)
-
+    # Plot `agent_to_cum_mean_regret_list_map`
+    for agent, cum_mean_regret_list in mean_sim_result.agent_to_cum_mean_regret_list_map.items():
+        plot.plot(round_index_list, cum_mean_regret_list, color=next(dark_color_cycle), label=agent.name, marker=next(marker_cycle), linestyle="dotted", lw=2, mew=1, ms=1)
 
     fontsize = 14
     plot.legend(fontsize=fontsize)
-    plot.ylabel("Mean regret", fontsize=fontsize)
+    plot.ylabel("Mean cumulative regret", fontsize=fontsize)
     # plot.yscale("log")
     plot.xlabel("Round", fontsize=fontsize)
 
