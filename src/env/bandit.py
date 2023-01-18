@@ -10,7 +10,7 @@ class Bandit:
         self.num_arms = num_arms
 
     @abc.abstractmethod
-    def pull(self, arm_index):
+    def pull(self, arm_id):
         pass
 
     @abc.abstractmethod
@@ -65,8 +65,8 @@ class StationaryBandit(Bandit):
             ")"
         )
 
-    def pull(self, arm_index: int):
-        return self.arm_list[arm_index].pull()
+    def pull(self, arm_id: int):
+        return self.arm_list[arm_id].pull()
 
     def pull_high_reward(self):
         # Note: High-reward arms are at the beginning of `arm_list`.

@@ -31,6 +31,6 @@ def plot_mean_sim_result(mean_sim_result: result_module.MeanSimResult, title: st
         plot.title(title)
 
     # Save the plot
-    plot.gcf().set_size_inches(10, 6)
+    plot.gcf().set_size_inches(30, 6)
     plot.savefig(f"plot_mean_sim_result_{plot_suffix}.png", bbox_inches="tight")
     plot.gcf().clear()

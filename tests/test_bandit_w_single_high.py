@@ -48,7 +48,12 @@ def test_stationary_bandit_w_ts_sliding_vs_reset_win(
         low_reward_rv=low_reward_rv,
     )
 
-    win_len = 20
+    agent_ts = agent_module.ThompsonSamplingAgent_full(
+        name="TS",
+        num_arms=num_arms,
+    )
+
+    win_len = 100
     agent_ts_sliding_win = agent_module.ThompsonSamplingAgent_slidingWin(
         name="TS-SlidingWin",
         num_arms=num_arms,
@@ -66,7 +71,9 @@ def test_stationary_bandit_w_ts_sliding_vs_reset_win(
     num_sim_runs = 1
     mean_sim_result = sim.sim(
         bandit=bandit,
-        agent_list=[agent_ts_sliding_win, agent_ts_reset_win],
+        agent_list=[agent_ts],
+        # agent_list=[agent_ts_sliding_win],
+        # agent_list=[agent_ts_sliding_win, agent_ts_reset_win],
         num_rounds=num_rounds,
         num_sim_runs=num_sim_runs,
     )
@@ -84,5 +91,4 @@ def test_stationary_bandit_w_ts_sliding_vs_reset_win(
         title=title,
         plot_suffix="stationary_bandit_w_ts_sliding_vs_reset_win",
     )
-
-    log(INFO, "", mean_sim_result=mean_sim_result)
+    # log(INFO, "", mean_sim_result=mean_sim_result)

@@ -1,5 +1,7 @@
 import abc
 import collections
+import dataclasses
+import math
 
 from typing import Tuple
 
@@ -25,11 +27,75 @@ class Agent(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def observe(self, arm_index: int, reward: float):
+    def observe(self, arm_id: int, reward: float):
         pass
 
 
 class ThompsonSamplingAgent(Agent):
+    def __init__(self, name: str, num_arms: int):
+        super().__init__(name=name, num_arms=num_arms)
+
+    @abc.abstractmethod
+    def mean_stdev_reward(self, arm_id: int):
+        pass
+
+    def next_action(self) -> int:
+        # Choose the node with min wait time sample
+        action, max_sample = None, float("-Inf")
+        for arm_id in range(self.num_arms):
+            mean, stdev = self.mean_stdev_reward(arm_id=arm_id)
+            log(DEBUG, f"arm_id= {arm_id}", mean=mean, stdev=stdev)
+
+            # s = rv.TruncatedNormal(mu=mean, sigma=stdev).sample()
+            s = rv.Normal(mu=mean, sigma=stdev).sample()
+            if s > max_sample:
+                max_sample = s
+                action = arm_id
+                # log(DEBUG, "s > max_sample", s=s, max_sample=max_sample, action=action)
+
+        return action
+
+
+@dataclasses.dataclass
+class RewardRecord:
+    count: int = dataclasses.field(default=0)
+    E_reward: float = dataclasses.field(default=0)
+    E_reward_2: float = dataclasses.field(default=0)
+
+    def update(self, reward: float):
+        self.E_reward = (self.count * self.E_reward + reward) / (self.count + 1)
+        self.E_reward_2 = (self.count * self.E_reward_2 + reward**2) / (self.count + 1)
+        self.count += 1
+
+
+class ThompsonSamplingAgent_full(ThompsonSamplingAgent):
+    def __init__(self, name: str, num_arms: int):
+        super().__init__(name=name, num_arms=num_arms)
+
+        # `reward_tuple` = (count, E_reward, E_reward_2)
+        self.arm_id_to_reward_record_map = {arm_id: RewardRecord() for arm_id in range(num_arms)}
+
+    def mean_stdev_reward(self, arm_id: str) -> Tuple[float, float]:
+        reward_record = self.arm_id_to_reward_record_map[arm_id]
+
+        stdev = 0
+        diff = reward_record.E_reward**2 - reward_record.E_reward_2
+        if diff > 0:
+            stdev = math.sqrt(diff)
+        else:
+            log(DEBUG, f"arm_id= {arm_id}", diff=diff)
+
+        if stdev == 0:
+            stdev = 1
+
+        return reward_record.E_reward, stdev
+
+    def observe(self, arm_id: int, reward: float):
+        self.arm_id_to_reward_record_map[arm_id].update(reward=reward)
+        log(DEBUG, "recorded", arm_id=arm_id, reward=reward)
+
+
+class ThompsonSamplingAgent_wWin(ThompsonSamplingAgent):
     def __init__(self, name: str, num_arms: int, win_len: int):
         super().__init__(name=name, num_arms=num_arms)
 
@@ -49,23 +115,7 @@ class ThompsonSamplingAgent(Agent):
 
         return mean, stdev
 
-
-class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent):
-    def __init__(self, name: str, num_arms: int, win_len: int):
-        super().__init__(name=name, num_arms=num_arms, win_len=win_len)
-
-    def __repr__(self):
-        return (
-            "ThompsonSamplingAgent_slidingWin( \n"
-            f"\t name= {self.name} \n"
-            f"\t num_arms= {self.num_arms} \n"
-            f"\t win_len= {self.win_len} \n"
-            ")"
-        )
-
     def next_action(self) -> int:
-        log(DEBUG, "", arm_id_to_reward_queue_map=self.arm_id_to_reward_queue_map)
-
         # Choose the node with min wait time sample
         action, max_sample = None, float("-Inf")
         for arm_id in range(self.num_arms):
@@ -80,12 +130,26 @@ class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent):
 
         return action
 
-    def observe(self, arm_index: int, reward: float):
+
+class ThompsonSamplingAgent_slidingWin(ThompsonSamplingAgent_wWin):
+    def __init__(self, name: str, num_arms: int, win_len: int):
+        super().__init__(name=name, num_arms=num_arms, win_len=win_len)
+
+    def __repr__(self):
+        return (
+            "ThompsonSamplingAgent_slidingWin( \n"
+            f"\t name= {self.name} \n"
+            f"\t num_arms= {self.num_arms} \n"
+            f"\t win_len= {self.win_len} \n"
+            ")"
+        )
+
+    def observe(self, arm_id: int, reward: float):
         self.arm_id_to_reward_queue_map[arm_id].append(reward)
         log(DEBUG, "recorded", arm_id=arm_id, reward=reward)
 
 
-class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent):
+class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent_wWin):
     def __init__(self, name: str, num_arms: int, win_len: int, tail_mass_threshold: float):
         super().__init__(name=name, num_arms=num_arms, win_len=win_len)
 
@@ -99,24 +163,7 @@ class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent):
             ")"
         )
 
-    def next_action(self) -> int:
-        log(DEBUG, "", arm_id_to_reward_queue_map=self.arm_id_to_reward_queue_map)
-
-        # Choose the node with min wait time sample
-        action, max_sample = None, float("-Inf")
-        for arm_id in range(self.num_arms):
-            mean, stdev = self.mean_stdev_reward(arm_id=arm_id)
-
-            # s = rv.TruncatedNormal(mu=mean, sigma=stdev).sample()
-            s = rv.Normal(mu=mean, sigma=stdev).sample()
-            if s > max_sample:
-                max_sample = s
-                action = arm_id
-                # log(DEBUG, "s > max_sample", s=s, max_sample=max_sample, action=action)
-
-        return action
-
-    def observe(self, arm_index: int, reward: float):
+    def observe(self, arm_id: int, reward: float):
         def record():
             self.arm_id_to_reward_queue_map[arm_id].append(reward)
             log(DEBUG, "recorded", arm_id=arm_id, reward=reward)

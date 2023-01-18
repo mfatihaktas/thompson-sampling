@@ -15,16 +15,17 @@ def sim_single_run(
         log(INFO, f">> i= {i}")
 
         for agent in agent_list:
-            arm_index = agent.next_action()
-            reward_from_action = bandit.pull(arm_index=arm_index)
-            log(DEBUG, "", arm_index=arm_index, reward_from_action=reward_from_action)
+            arm_id = agent.next_action()
+            reward_sample = bandit.pull(arm_id=arm_id)
+            log(DEBUG, "", arm_id=arm_id, reward_sample=reward_sample)
 
-            sim_result.append_reward_sample(agent=agent, reward=reward_from_action)
+            sim_result.append_reward_sample(agent=agent, reward=reward_sample)
+            agent.observe(arm_id=arm_id, reward=reward_sample)
 
-        reward_from_high_reward = bandit.pull_high_reward()
-        log(DEBUG, "", reward_from_high_reward=reward_from_high_reward)
+        sample_from_high_reward = bandit.pull_high_reward()
+        log(DEBUG, "", sample_from_high_reward=sample_from_high_reward)
 
-        sim_result.append_high_reward_sample(reward=reward_from_high_reward)
+        sim_result.append_high_reward_sample(reward=sample_from_high_reward)
 
     return sim_result
 
