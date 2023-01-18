@@ -2,6 +2,7 @@ import abc
 import collections
 import dataclasses
 import math
+import numpy
 
 from typing import Tuple
 
@@ -168,11 +169,11 @@ class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent_wWin):
             self.arm_id_to_reward_queue_map[arm_id].append(reward)
             log(DEBUG, "recorded", arm_id=arm_id, reward=reward)
 
-        if len(self.arm_id_to_reward_queue_map[node_id]) < 5:
+        if len(self.arm_id_to_reward_queue_map[arm_id]) < 5:
             record()
 
         else:
-            mean, stdev = self.mean_stdev_reward(node_id)
+            mean, stdev = self.mean_stdev_reward(arm_id)
             # reward_rv = rv.TruncatedNormal(mu=mean, sigma=stdev)
             reward_rv = rv.Normal(mu=mean, sigma=stdev)
 
@@ -181,6 +182,6 @@ class ThompsonSamplingAgent_resetWinOnRareEvent(ThompsonSamplingAgent_wWin):
             tail_mass = min(Pr_getting_larger_than_reward, Pr_getting_smaller_than_reward)
             if tail_mass <= self.tail_mass_threshold:
                 log(DEBUG, "Rare event detected", reward=reward, mean=mean, stdev=stdev, tail_mass=tail_mass, tail_mass_threshold=self.tail_mass_threshold)
-                self.arm_id_to_reward_queue_map[node_id].clear()
+                self.arm_id_to_reward_queue_map[arm_id].clear()
             else:
                 record()
